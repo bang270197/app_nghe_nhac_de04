@@ -7,6 +7,9 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class MusicViewModel : ViewModel() {
 
+    private val _songs = MutableStateFlow(MockData.songs)
+    val songs: StateFlow<List<Song>> = _songs.asStateFlow()
+
     private val _currentSong = MutableStateFlow<Song?>(null)
     val currentSong: StateFlow<Song?> = _currentSong.asStateFlow()
 
@@ -44,5 +47,14 @@ class MusicViewModel : ViewModel() {
 
     fun seekTo(position: Float) {
         _progress.value = position
+    }
+
+    fun toggleFavorite(songId: String) {
+        _songs.value = _songs.value.map {
+            if (it.id == songId) it.copy(isFavorite = !it.isFavorite) else it
+        }
+        if (_currentSong.value?.id == songId) {
+            _currentSong.value = _currentSong.value?.copy(isFavorite = !(_currentSong.value?.isFavorite ?: false))
+        }
     }
 }

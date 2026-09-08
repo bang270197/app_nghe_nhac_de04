@@ -36,6 +36,7 @@ fun MusicNavigation() {
             if (album != null) {
                 SongListScreen(
                     album = album,
+                    viewModel = viewModel,
                     onSongClick = { song ->
                         viewModel.selectSong(song)
                         navController.navigate(Screen.Player.route)

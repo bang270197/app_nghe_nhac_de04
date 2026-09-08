@@ -145,28 +145,140 @@ fun AlbumListScreen(onAlbumClick: (Album) -> Unit) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SongListScreen(album: Album, onSongClick: (Song) -> Unit, onBack: () -> Unit) {
-    val songs = MockData.songs.filter { it.albumTitle == album.title }
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(album.title) },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                }
+fun SongItem(
+    song: Song,
+    isSelected: Boolean,
+    onSongClick: () -> Unit,
+    onFavoriteClick: () -> Unit
+) {
+    val tintColor = if (isSelected) Color(0xFFFF5722) else Color.Black
+    val dateColor = Color.Gray
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onSongClick() }
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        AsyncImage(
+            model = song.imageUrl,
+            contentDescription = null,
+            modifier = Modifier
+                .size(100.dp)
+                .clip(RoundedCornerShape(4.dp)),
+            contentScale = ContentScale.Crop
+        )
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = song.title,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = tintColor,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = song.artist,
+                fontSize = 16.sp,
+                color = tintColor,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = song.releaseDate,
+                fontSize = 14.sp,
+                color = dateColor
             )
         }
+
+        Column(
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.height(100.dp)
+        ) {
+            Text(
+                text = song.durationText,
+                fontSize = 14.sp,
+                color = dateColor
+            )
+            IconButton(onClick = onFavoriteClick) {
+                Icon(
+                    imageVector = if (song.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    contentDescription = "Favorite",
+                    tint = if (song.isFavorite) Color(0xFFFF5722) else Color(0xFFFF5722) // Both orange/red in image
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SongListScreen(
+    album: Album,
+    viewModel: MusicViewModel,
+    onSongClick: (Song) -> Unit,
+    onBack: () -> Unit
+) {
+    val songs by viewModel.songs.collectAsState()
+    val albumSongs = songs.filter { it.albumTitle == album.title }
+    val currentSong by viewModel.currentSong.collectAsState()
+
+    Scaffold(
+        topBar = {
+            Column {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    IconButton(
+                        onClick = onBack,
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
+                            .padding(start = 8.dp)
+                    ) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.Gray
+                        )
+                    }
+                    Text(
+                        album.artist,
+                        color = Color(0xFFB39DDB), // Light purple color from top of image
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
+            }
+        }
     ) { padding ->
-        LazyColumn(modifier = Modifier.padding(padding)) {
-            items(songs) { song ->
-                ListItem(
-                    headlineContent = { Text(song.title) },
-                    supportingContent = { Text(song.artist) },
-                    modifier = Modifier.clickable { onSongClick(song) }
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            items(albumSongs) { song ->
+                SongItem(
+                    song = song,
+                    isSelected = song.id == currentSong?.id,
+                    onSongClick = { onSongClick(song) },
+                    onFavoriteClick = { viewModel.toggleFavorite(song.id) }
+                )
+                HorizontalDivider(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    thickness = 0.5.dp,
+                    color = Color.LightGray
                 )
             }
         }
