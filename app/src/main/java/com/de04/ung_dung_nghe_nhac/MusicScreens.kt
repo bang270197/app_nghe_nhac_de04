@@ -295,58 +295,176 @@ fun PlayerScreen(
     val isPlaying by viewModel.isPlaying.collectAsState()
     val progress by viewModel.progress.collectAsState()
 
+    val backgroundColor = Color(0xFFC5CAE9) // Light bluish-gray
+    val orangeColor = Color(0xFFFF5722)
+
     Scaffold(
+        containerColor = backgroundColor,
         topBar = {
-            TopAppBar(
-                title = { Text("Now Playing") },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+            currentSong?.let { song ->
+                Surface(
+                    color = backgroundColor,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        AsyncImage(
+                            model = song.imageUrl,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(60.dp)
+                                .clip(RoundedCornerShape(4.dp)),
+                            contentScale = ContentScale.Crop
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                song.title,
+                                color = Color.Gray,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Text(
+                                song.artist,
+                                color = Color.Gray,
+                                fontSize = 14.sp
+                            )
+                        }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            IconButton(onClick = { viewModel.playPrevious() }) {
+                                Icon(Icons.Default.SkipPrevious, contentDescription = null, tint = Color.White)
+                            }
+                            IconButton(onClick = { viewModel.togglePlayPause() }) {
+                                Icon(if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow, contentDescription = null, tint = Color.White)
+                            }
+                            IconButton(onClick = { viewModel.playNext() }) {
+                                Icon(Icons.Default.SkipNext, contentDescription = null, tint = Color.White)
+                            }
+                            IconButton(onClick = onBack) {
+                                Icon(Icons.Default.Close, contentDescription = "Close", tint = orangeColor, modifier = Modifier.size(32.dp))
+                            }
+                        }
                     }
                 }
-            )
+            }
         }
     ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            currentSong?.let { song ->
-                Text(song.title, fontSize = 24.sp, fontWeight = FontWeight.Bold)
-                Text(song.artist, fontSize = 18.sp, color = MaterialTheme.colorScheme.secondary)
-                
-                Spacer(modifier = Modifier.height(48.dp))
-                
-                Slider(
-                    value = progress,
-                    onValueChange = { viewModel.seekTo(it) },
-                    modifier = Modifier.fillMaxWidth()
+        currentSong?.let { song ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // Large Image
+                AsyncImage(
+                    model = song.imageUrl,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .padding(bottom = 16.dp),
+                    contentScale = ContentScale.FillWidth
                 )
-                
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
+
+                // Info Section
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    IconButton(onClick = { viewModel.playPrevious() }) {
-                        Icon(Icons.Default.SkipPrevious, contentDescription = "Previous", modifier = Modifier.size(48.dp))
-                    }
-                    IconButton(onClick = { viewModel.togglePlayPause() }) {
-                        Icon(
-                            if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                            contentDescription = "Play/Pause",
-                            modifier = Modifier.size(64.dp)
+                    Text(
+                        song.title,
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.DarkGray
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        IconButton(onClick = { viewModel.toggleFavorite(song.id) }) {
+                            Icon(
+                                if (song.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                                contentDescription = "Favorite",
+                                tint = orangeColor,
+                                modifier = Modifier.size(32.dp)
+                            )
+                        }
+                        Text(
+                            song.artist,
+                            fontSize = 18.sp,
+                            color = Color.Gray
                         )
+                        IconButton(onClick = { /* TODO */ }) {
+                            Icon(Icons.Default.CloudDownload, contentDescription = "Download", tint = Color.White, modifier = Modifier.size(32.dp))
+                        }
                     }
-                    IconButton(onClick = { viewModel.playNext() }) {
-                        Icon(Icons.Default.SkipNext, contentDescription = "Next", modifier = Modifier.size(48.dp))
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    // Slider
+                    Slider(
+                        value = progress,
+                        onValueChange = { viewModel.seekTo(it) },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = SliderDefaults.colors(
+                            thumbColor = Color(0xFF009688),
+                            activeTrackColor = Color.Gray,
+                            inactiveTrackColor = Color.LightGray
+                        )
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text("0 : 00", fontSize = 14.sp, color = Color.Gray)
+                        Text(song.durationText, fontSize = 14.sp, color = Color.Gray)
                     }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    // Controls
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        IconButton(onClick = { /* TODO */ }) {
+                            Icon(Icons.Default.Shuffle, contentDescription = "Shuffle", tint = Color.White, modifier = Modifier.size(32.dp))
+                        }
+                        IconButton(onClick = { viewModel.playPrevious() }) {
+                            Icon(Icons.Default.SkipPrevious, contentDescription = "Previous", tint = Color.White, modifier = Modifier.size(40.dp))
+                        }
+                        IconButton(onClick = { viewModel.togglePlayPause() }) {
+                            Icon(
+                                if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                                contentDescription = "Play/Pause",
+                                tint = Color.White,
+                                modifier = Modifier.size(48.dp)
+                            )
+                        }
+                        IconButton(onClick = { viewModel.playNext() }) {
+                            Icon(Icons.Default.SkipNext, contentDescription = "Next", tint = Color.White, modifier = Modifier.size(40.dp))
+                        }
+                        IconButton(onClick = { /* TODO */ }) {
+                            Icon(Icons.Default.Repeat, contentDescription = "Repeat", tint = Color.White, modifier = Modifier.size(32.dp))
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(32.dp))
                 }
-            } ?: Text("No song selected")
+            }
+        } ?: Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("No song selected")
         }
     }
 }
