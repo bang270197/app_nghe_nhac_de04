@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -17,8 +18,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -26,117 +27,106 @@ import coil.compose.AsyncImage
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SoundCloudTopBar() {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = {
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                Text(
-                    "SoundCloud",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    color = Color.White
-                )
-            }
+            Text(
+                "DISCOVER",
+                fontWeight = FontWeight.Black,
+                fontSize = 22.sp,
+                color = Color(0xFF1A1A1A),
+                letterSpacing = 1.5.sp
+            )
         },
         navigationIcon = {
             IconButton(onClick = { /* TODO */ }) {
-                Icon(Icons.Default.Menu, contentDescription = "Menu", tint = Color.White)
+                Icon(Icons.Default.Search, contentDescription = "Search", tint = Color(0xFF6200EE), modifier = Modifier.size(26.dp))
             }
         },
         actions = {
             IconButton(onClick = { /* TODO */ }) {
-                Icon(Icons.Default.Person, contentDescription = "Profile", tint = Color.White)
-            }
-            IconButton(onClick = { /* TODO */ }) {
-                Icon(Icons.Default.Notifications, contentDescription = "Notifications", tint = Color.White)
+                Icon(Icons.Default.Settings, contentDescription = "Settings", tint = Color(0xFF03DAC5), modifier = Modifier.size(26.dp))
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color(0xFFB0B0C0) // Grayish blue from image
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = Color.White
         )
     )
 }
 
 @Composable
 fun AlbumItem(album: Album, onClick: () -> Unit) {
-    Column(
-        modifier = Modifier
-            .width(140.dp)
-            .padding(8.dp)
-            .clickable { onClick() }
-    ) {
-        AsyncImage(
-            model = album.imageUrl,
-            contentDescription = album.title,
-            modifier = Modifier
-                .size(120.dp)
-                .clip(RoundedCornerShape(4.dp)),
-            contentScale = ContentScale.Crop
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = album.title,
-            fontWeight = FontWeight.Medium,
-            fontSize = 14.sp,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-        Text(
-            text = album.artist,
-            color = Color.Gray,
-            fontSize = 12.sp,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-    }
-}
-
-@Composable
-fun CategoryRow(category: Category, onAlbumClick: (Album) -> Unit) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 4.dp),
+            .width(180.dp)
+            .padding(8.dp)
+            .clickable { onClick() },
+        shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        shape = RoundedCornerShape(4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Column(modifier = Modifier.padding(vertical = 8.dp)) {
-            Text(
-                text = "${category.name} >>",
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Gray
+        Column {
+            AsyncImage(
+                model = album.imageUrl,
+                contentDescription = album.title,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1f)
+                    .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)),
+                contentScale = ContentScale.Crop
             )
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = 8.dp)
-            ) {
-                items(category.albums) { album ->
-                    AlbumItem(album = album, onClick = { onAlbumClick(album) })
-                }
+            Column(modifier = Modifier.padding(12.dp)) {
+                Text(
+                    text = album.title,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 15.sp,
+                    color = Color(0xFF1A1A1A),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = album.artist,
+                    color = Color(0xFF757575),
+                    fontSize = 13.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun AlbumListScreenPreview() {
-    AlbumListScreen(onAlbumClick = {})
+fun CategoryRow(category: Category, onAlbumClick: (Album) -> Unit) {
+    Column(modifier = Modifier.padding(vertical = 12.dp)) {
+        Text(
+            text = category.name,
+            modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Black,
+            color = Color(0xFF1A1A1A)
+        )
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            items(category.albums) { album ->
+                AlbumItem(album = album, onClick = { onAlbumClick(album) })
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlbumListScreen(onAlbumClick: (Album) -> Unit) {
     Scaffold(
-        topBar = { SoundCloudTopBar() }
+        topBar = { SoundCloudTopBar() },
+        containerColor = Color(0xFFF8F9FE) // Fresh light background
     ) { padding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(MockData.categories) { category ->
                 CategoryRow(category = category, onAlbumClick = onAlbumClick)
@@ -295,20 +285,24 @@ fun PlayerScreen(
     val isPlaying by viewModel.isPlaying.collectAsState()
     val progress by viewModel.progress.collectAsState()
 
-    val backgroundColor = Color(0xFFC5CAE9) // Light bluish-gray
-    val orangeColor = Color(0xFFFF5722)
+    val backgroundColor = Color(0xFFF0F2FF) // Fresh lavender background
+    val accentColor = Color(0xFFFF4081) // Friendly pink
+    val darkTextColor = Color(0xFF1A1A1A)
 
     Scaffold(
         containerColor = backgroundColor,
         topBar = {
             currentSong?.let { song ->
                 Surface(
-                    color = backgroundColor,
-                    modifier = Modifier.fillMaxWidth()
+                    color = Color.White,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp)),
+                    shadowElevation = 8.dp
                 ) {
                     Row(
                         modifier = Modifier
-                            .padding(8.dp)
+                            .padding(horizontal = 16.dp, vertical = 12.dp)
                             .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -316,16 +310,16 @@ fun PlayerScreen(
                             model = song.imageUrl,
                             contentDescription = null,
                             modifier = Modifier
-                                .size(60.dp)
-                                .clip(RoundedCornerShape(4.dp)),
+                                .size(50.dp)
+                                .clip(RoundedCornerShape(12.dp)),
                             contentScale = ContentScale.Crop
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 song.title,
-                                color = Color.Gray,
-                                fontSize = 16.sp,
+                                color = darkTextColor,
+                                fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
@@ -333,21 +327,21 @@ fun PlayerScreen(
                             Text(
                                 song.artist,
                                 color = Color.Gray,
-                                fontSize = 14.sp
+                                fontSize = 13.sp
                             )
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             IconButton(onClick = { viewModel.playPrevious() }) {
-                                Icon(Icons.Default.SkipPrevious, contentDescription = null, tint = Color.White)
+                                Icon(Icons.Default.SkipPrevious, contentDescription = null, tint = Color(0xFF6200EE))
                             }
                             IconButton(onClick = { viewModel.togglePlayPause() }) {
-                                Icon(if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow, contentDescription = null, tint = Color.White)
+                                Icon(if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow, contentDescription = null, tint = Color(0xFF6200EE))
                             }
                             IconButton(onClick = { viewModel.playNext() }) {
-                                Icon(Icons.Default.SkipNext, contentDescription = null, tint = Color.White)
+                                Icon(Icons.Default.SkipNext, contentDescription = null, tint = Color(0xFF6200EE))
                             }
                             IconButton(onClick = onBack) {
-                                Icon(Icons.Default.Close, contentDescription = "Close", tint = orangeColor, modifier = Modifier.size(32.dp))
+                                Icon(Icons.Default.Close, contentDescription = "Close", tint = accentColor, modifier = Modifier.size(28.dp))
                             }
                         }
                     }
@@ -362,51 +356,62 @@ fun PlayerScreen(
                     .padding(padding),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Large Image
-                AsyncImage(
-                    model = song.imageUrl,
-                    contentDescription = null,
+                // Large Image with Shadow
+                Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
-                        .padding(bottom = 16.dp),
-                    contentScale = ContentScale.FillWidth
-                )
+                        .padding(24.dp),
+                    shape = RoundedCornerShape(32.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 12.dp)
+                ) {
+                    AsyncImage(
+                        model = song.imageUrl,
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                }
 
                 // Info Section
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
+                        .padding(horizontal = 32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
                         song.title,
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.DarkGray
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Black,
+                        color = darkTextColor,
+                        textAlign = TextAlign.Center
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        song.artist,
+                        fontSize = 18.sp,
+                        color = Color.Gray
+                    )
+                    
+                    Spacer(modifier = Modifier.height(24.dp))
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.Center
                     ) {
                         IconButton(onClick = { viewModel.toggleFavorite(song.id) }) {
                             Icon(
                                 if (song.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                                 contentDescription = "Favorite",
-                                tint = orangeColor,
-                                modifier = Modifier.size(32.dp)
+                                tint = accentColor,
+                                modifier = Modifier.size(36.dp)
                             )
                         }
-                        Text(
-                            song.artist,
-                            fontSize = 18.sp,
-                            color = Color.Gray
-                        )
+                        Spacer(modifier = Modifier.width(48.dp))
                         IconButton(onClick = { /* TODO */ }) {
-                            Icon(Icons.Default.CloudDownload, contentDescription = "Download", tint = Color.White, modifier = Modifier.size(32.dp))
+                            Icon(Icons.Default.CloudDownload, contentDescription = "Download", tint = Color(0xFF03DAC5), modifier = Modifier.size(36.dp))
                         }
                     }
 
@@ -418,8 +423,8 @@ fun PlayerScreen(
                         onValueChange = { viewModel.seekTo(it) },
                         modifier = Modifier.fillMaxWidth(),
                         colors = SliderDefaults.colors(
-                            thumbColor = Color(0xFF009688),
-                            activeTrackColor = Color.Gray,
+                            thumbColor = Color(0xFF6200EE),
+                            activeTrackColor = Color(0xFFBB86FC),
                             inactiveTrackColor = Color.LightGray
                         )
                     )
@@ -427,11 +432,11 @@ fun PlayerScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text("0 : 00", fontSize = 14.sp, color = Color.Gray)
-                        Text(song.durationText, fontSize = 14.sp, color = Color.Gray)
+                        Text("0:00", fontSize = 12.sp, color = Color.Gray, fontWeight = FontWeight.Bold)
+                        Text(song.durationText, fontSize = 12.sp, color = Color.Gray, fontWeight = FontWeight.Bold)
                     }
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(32.dp))
 
                     // Controls
                     Row(
@@ -440,27 +445,36 @@ fun PlayerScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         IconButton(onClick = { /* TODO */ }) {
-                            Icon(Icons.Default.Shuffle, contentDescription = "Shuffle", tint = Color.White, modifier = Modifier.size(32.dp))
+                            Icon(Icons.Default.Shuffle, contentDescription = "Shuffle", tint = Color(0xFF757575), modifier = Modifier.size(28.dp))
                         }
                         IconButton(onClick = { viewModel.playPrevious() }) {
-                            Icon(Icons.Default.SkipPrevious, contentDescription = "Previous", tint = Color.White, modifier = Modifier.size(40.dp))
+                            Icon(Icons.Default.SkipPrevious, contentDescription = "Previous", tint = darkTextColor, modifier = Modifier.size(44.dp))
                         }
-                        IconButton(onClick = { viewModel.togglePlayPause() }) {
-                            Icon(
-                                if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                                contentDescription = "Play/Pause",
-                                tint = Color.White,
-                                modifier = Modifier.size(48.dp)
-                            )
+                        Surface(
+                            modifier = Modifier
+                                .size(72.dp)
+                                .clickable { viewModel.togglePlayPause() },
+                            shape = CircleShape,
+                            color = Color(0xFF6200EE),
+                            shadowElevation = 6.dp
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(
+                                    if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                                    contentDescription = "Play/Pause",
+                                    tint = Color.White,
+                                    modifier = Modifier.size(40.dp)
+                                )
+                            }
                         }
                         IconButton(onClick = { viewModel.playNext() }) {
-                            Icon(Icons.Default.SkipNext, contentDescription = "Next", tint = Color.White, modifier = Modifier.size(40.dp))
+                            Icon(Icons.Default.SkipNext, contentDescription = "Next", tint = darkTextColor, modifier = Modifier.size(44.dp))
                         }
                         IconButton(onClick = { /* TODO */ }) {
-                            Icon(Icons.Default.Repeat, contentDescription = "Repeat", tint = Color.White, modifier = Modifier.size(32.dp))
+                            Icon(Icons.Default.Repeat, contentDescription = "Repeat", tint = Color(0xFF757575), modifier = Modifier.size(28.dp))
                         }
                     }
-                    Spacer(modifier = Modifier.height(32.dp))
+                    Spacer(modifier = Modifier.height(40.dp))
                 }
             }
         } ?: Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

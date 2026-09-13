@@ -27,62 +27,62 @@ data class Category(
 
 object MockData {
     val songs = listOf(
-        // Album 1: MURDER ON MY MIND
-        Song("101", "YNW MELLY - MURDER O", "Ynw Melly", "MURDER ON MY MIND", "https://picsum.photos/seed/m1/400/400", "04-03-2017", "4:27", true),
-        Song("102", "Robbery", "Juice WRLD", "MURDER ON MY MIND", "https://picsum.photos/seed/m2/400/400", "08-03-2019", "4:00", false),
-        Song("103", "WORTH IT", "YK Osiris", "MURDER ON MY MIND", "https://picsum.photos/seed/m3/400/400", "01-02-2019", "3:09", true),
-        Song("104", "Swervin feat. 6ix9in", "A BOOGIE WIT DA HOODIE", "MURDER ON MY MIND", "https://picsum.photos/seed/m4/400/400", "19-12-2018", "3:08", true),
-        Song("105", "Mixed Personalities", "Ynw Melly", "MURDER ON MY MIND", "https://picsum.photos/seed/m5/400/400", "17-01-2019", "3:50", false),
+        // Midnights - Taylor Swift
+        Song("101", "Anti-Hero", "Taylor Swift", "Midnights", "https://picsum.photos/id/1/400/400", "21-10-2022", "3:20", true),
+        Song("102", "Lavender Haze", "Taylor Swift", "Midnights", "https://picsum.photos/id/1/400/400", "21-10-2022", "3:22", false),
+        Song("103", "Maroon", "Taylor Swift", "Midnights", "https://picsum.photos/id/1/400/400", "21-10-2022", "3:38", true),
+        Song("104", "Snow On The Beach", "Taylor Swift ft. Lana Del Rey", "Midnights", "https://picsum.photos/id/1/400/400", "21-10-2022", "4:16", false),
+        Song("105", "You're On Your Own, Kid", "Taylor Swift", "Midnights", "https://picsum.photos/id/1/400/400", "21-10-2022", "3:14", true),
 
-        // Album 2: WORTH IT
-        Song("201", "Worth It", "YK Osiris", "WORTH IT", "https://picsum.photos/seed/w1/400/400", "01-02-2019", "3:11", false),
-        Song("202", "Valentine", "YK Osiris", "WORTH IT", "https://picsum.photos/seed/w2/400/400", "20-04-2018", "3:25", true),
-        Song("203", "Run It Up", "YK Osiris", "WORTH IT", "https://picsum.photos/seed/w3/400/400", "15-06-2018", "2:58", false),
+        // Starboy - The Weeknd
+        Song("201", "Starboy", "The Weeknd ft. Daft Punk", "Starboy", "https://picsum.photos/id/10/400/400", "25-11-2016", "3:50", true),
+        Song("202", "I Feel It Coming", "The Weeknd ft. Daft Punk", "Starboy", "https://picsum.photos/id/10/400/400", "25-11-2016", "4:29", false),
+        Song("203", "Reminder", "The Weeknd", "Starboy", "https://picsum.photos/id/10/400/400", "25-11-2016", "3:38", true),
 
-        // Album 3: Haunt u w/lil p...
-        Song("301", "Haunt u", "Lil Peep", "Haunt u w/lil p...", "https://picsum.photos/seed/h1/400/400", "12-10-2016", "2:56", true),
-        Song("302", "Star Shopping", "Lil Peep", "Haunt u w/lil p...", "https://picsum.photos/seed/h2/400/400", "17-08-2015", "2:22", false),
+        // Harry's House - Harry Styles
+        Song("301", "As It Was", "Harry Styles", "Harry's House", "https://picsum.photos/id/20/400/400", "01-04-2022", "2:47", true),
+        Song("302", "Late Night Talking", "Harry Styles", "Harry's House", "https://picsum.photos/id/20/400/400", "20-05-2022", "2:57", false),
 
-        // Album 4: Falling Down
-        Song("401", "Falling Down", "Lil Peep & XXXTENTACION", "Falling Down", "https://picsum.photos/seed/f1/400/400", "19-09-2018", "3:16", true),
-        Song("402", "SAD!", "XXXTENTACION", "Falling Down", "https://picsum.photos/seed/f2/400/400", "02-03-2018", "2:46", false),
-        Song("403", "Moonlight", "XXXTENTACION", "Falling Down", "https://picsum.photos/seed/f3/400/400", "02-03-2018", "2:15", true),
+        // Certified Lover Boy - Drake
+        Song("401", "Way 2 Sexy", "Drake ft. Future & Young Thug", "Certified Lover Boy", "https://picsum.photos/id/30/400/400", "03-09-2021", "4:17", true),
+        Song("402", "Girls Want Girls", "Drake ft. Lil Baby", "Certified Lover Boy", "https://picsum.photos/id/30/400/400", "03-09-2021", "3:41", false),
+        Song("403", "Fair Trade", "Drake ft. Travis Scott", "Certified Lover Boy", "https://picsum.photos/id/30/400/400", "03-09-2021", "4:51", true),
 
-        // Album 5: Sunlight On Your Skin
-        Song("501", "Sunlight On Your Skin", "Lil Peep & ILoveMakonnen", "Sunlight On Your Skin", "https://picsum.photos/seed/s1/400/400", "27-09-2018", "3:18", false),
-        Song("502", "I've Been Waiting", "Lil Peep & ILoveMakonnen", "Sunlight On Your Skin", "https://picsum.photos/seed/s2/400/400", "31-01-2019", "3:39", true),
+        // Future Nostalgia - Dua Lipa
+        Song("501", "Don't Start Now", "Dua Lipa", "Future Nostalgia", "https://picsum.photos/id/40/400/400", "31-10-2019", "3:03", true),
+        Song("502", "Levitating", "Dua Lipa", "Future Nostalgia", "https://picsum.photos/id/40/400/400", "27-03-2020", "3:23", true),
 
-        // Album 6: Cavetown
-        Song("601", "Boys Will Be Bugs", "cavetown", "Cavetown", "https://picsum.photos/seed/c1/400/400", "14-12-2018", "3:27", true),
-        Song("602", "Devil Town", "cavetown", "Cavetown", "https://picsum.photos/seed/c2/400/400", "23-01-2015", "3:01", false),
-        Song("603", "Lemon Boy", "cavetown", "Cavetown", "https://picsum.photos/seed/c3/400/400", "15-12-2017", "4:32", false),
+        // After Hours - The Weeknd
+        Song("601", "Blinding Lights", "The Weeknd", "After Hours", "https://picsum.photos/id/50/400/400", "29-11-2019", "3:20", true),
+        Song("602", "Save Your Tears", "The Weeknd", "After Hours", "https://picsum.photos/id/50/400/400", "20-03-2020", "3:35", false),
+        Song("603", "After Hours", "The Weeknd", "After Hours", "https://picsum.photos/id/50/400/400", "19-02-2020", "6:01", false),
 
-        // Album 7: Old Town Road
-        Song("701", "Old Town Road", "Lil Nas X", "Old Town Road", "https://picsum.photos/seed/o1/400/400", "03-12-2018", "1:53", true),
-        Song("702", "Panini", "Lil Nas X", "Old Town Road", "https://picsum.photos/seed/o2/400/400", "20-06-2019", "1:55", false),
-        Song("703", "Rodeo", "Lil Nas X & Cardi B", "Old Town Road", "https://picsum.photos/seed/o3/400/400", "21-06-2019", "2:39", true),
+        // Folklore - Taylor Swift
+        Song("701", "cardigan", "Taylor Swift", "Folklore", "https://picsum.photos/id/60/400/400", "24-07-2020", "3:59", true),
+        Song("702", "the 1", "Taylor Swift", "Folklore", "https://picsum.photos/id/60/400/400", "24-07-2020", "3:30", false),
+        Song("703", "exile", "Taylor Swift ft. Bon Iver", "Folklore", "https://picsum.photos/id/60/400/400", "24-07-2020", "4:45", true),
 
-        // Album 8: Robbery
-        Song("801", "Robbery", "Juice WRLD", "Robbery", "https://picsum.photos/seed/r1/400/400", "08-03-2019", "4:00", true),
-        Song("802", "Lucid Dreams", "Juice WRLD", "Robbery", "https://picsum.photos/seed/r2/400/400", "04-05-2018", "3:59", false),
-        Song("803", "All Girls Are The Same", "Juice WRLD", "Robbery", "https://picsum.photos/seed/r3/400/400", "13-04-2018", "2:45", true),
-        Song("804", "Lean Wit Me", "Juice WRLD", "Robbery", "https://picsum.photos/seed/r4/400/400", "02-08-2018", "2:55", false),
+        // Fine Line - Harry Styles
+        Song("801", "Watermelon Sugar", "Harry Styles", "Fine Line", "https://picsum.photos/id/70/400/400", "16-11-2019", "2:54", true),
+        Song("802", "Adore You", "Harry Styles", "Fine Line", "https://picsum.photos/id/70/400/400", "06-12-2019", "3:27", false),
+        Song("803", "Falling", "Harry Styles", "Fine Line", "https://picsum.photos/id/70/400/400", "13-12-2019", "4:00", true),
+        Song("804", "Lights Up", "Harry Styles", "Fine Line", "https://picsum.photos/id/70/400/400", "11-10-2019", "2:52", false),
 
-        // Album 9: BIG CHILD
-        Song("901", "MO BAMBA", "Sheck Wes", "BIG CHILD", "https://picsum.photos/seed/b1/400/400", "16-06-2017", "3:03", true),
-        Song("902", "Live Sheck Wes Die Sheck Wes", "Sheck Wes", "BIG CHILD", "https://picsum.photos/seed/b2/400/400", "24-01-2018", "3:45", false)
+        // Big Child - Sheck Wes
+        Song("901", "Mo Bamba", "Sheck Wes", "Big Child", "https://picsum.photos/id/80/400/400", "16-06-2017", "3:03", true),
+        Song("902", "Live Sheck Wes Die Sheck Wes", "Sheck Wes", "Big Child", "https://picsum.photos/id/80/400/400", "24-01-2018", "3:45", false)
     )
 
     val albums = listOf(
-        Album("1", "MURDER ON MY MIND", "Ynw Melly", 5, "https://picsum.photos/seed/m1/400/400"),
-        Album("2", "WORTH IT", "YK Osiris", 3, "https://picsum.photos/seed/w1/400/400"),
-        Album("3", "Haunt u w/lil p...", "Lil Peep", 2, "https://picsum.photos/seed/h1/400/400"),
-        Album("4", "Falling Down", "Lil Peep & XXXTENTACION", 3, "https://picsum.photos/seed/f1/400/400"),
-        Album("5", "Sunlight On Your Skin", "Lil Peep & ILoveMakonnen", 2, "https://picsum.photos/seed/s1/400/400"),
-        Album("6", "Cavetown", "cavetown", 3, "https://picsum.photos/seed/c1/400/400"),
-        Album("7", "Old Town Road", "Lil Nas X", 3, "https://picsum.photos/seed/o1/400/400"),
-        Album("8", "Robbery", "Juice WRLD", 4, "https://picsum.photos/seed/r1/400/400"),
-        Album("9", "BIG CHILD", "Sheck Wes", 2, "https://picsum.photos/seed/b1/400/400")
+        Album("1", "Midnights", "Taylor Swift", 5, "https://picsum.photos/id/1/400/400"),
+        Album("2", "Starboy", "The Weeknd", 3, "https://picsum.photos/id/10/400/400"),
+        Album("3", "Harry's House", "Harry Styles", 2, "https://picsum.photos/id/20/400/400"),
+        Album("4", "Certified Lover Boy", "Drake", 3, "https://picsum.photos/id/30/400/400"),
+        Album("5", "Future Nostalgia", "Dua Lipa", 2, "https://picsum.photos/id/40/400/400"),
+        Album("6", "After Hours", "The Weeknd", 3, "https://picsum.photos/id/50/400/400"),
+        Album("7", "Folklore", "Taylor Swift", 3, "https://picsum.photos/id/60/400/400"),
+        Album("8", "Fine Line", "Harry Styles", 4, "https://picsum.photos/id/70/400/400"),
+        Album("9", "Big Child", "Sheck Wes", 2, "https://picsum.photos/id/80/400/400")
     )
 
     val categories = listOf(
